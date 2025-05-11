@@ -56,9 +56,9 @@ function ProductCard({ product, addedQuantity, onAddProduct, onRemoveProduct }) 
   }
 
   return (
-    <article className='product-card'>
+    <article className="product-card">
       <header className='product-card__header'>
-        <img className='product-card__image' src={image.mobile} />
+        <img className={['product-card__image', addedQuantity && 'product-card__image--active'].filter(v => v).join(' ')} src={image.mobile} />
         {
           isAddedInCart
             ? (
