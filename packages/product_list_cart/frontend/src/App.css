@@ -1,0 +1,42 @@
+@font-face {
+  font-family: 'Red Hat Text';
+  src: url('../public/assets/fonts/RedHatText-VariableFont_wght.ttf');
+}
+
+@font-face {
+  font-family: 'Red Hat Text Italic';
+  src: url('../public/assets/fonts/RedHatText-Italic-VariableFont_wght.ttf');
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  font-size: 16px;
+  font-family: 'Red Hat Text';
+}
+
+:root {
+  --red: hsl(14, 86%, 42%);
+  --green: hsl(159, 69%, 38%);
+  --rose-50: hsl(20, 50%, 98%);
+  --rose-100: hsl(13, 31%, 94%);
+  --rose-300: hsl(14, 25%, 72%);
+  --rose-400: hsl(7, 20%, 60%);
+  --rose-500: hsl(12, 20%, 44%);
+  --rose-900: hsl(14, 65%, 9%);
+
+  /* typo */
+  --font-weight-regular: 400;
+  --font-weight-semibold: 600;
+  --font-weight-bol: 700;
+
+}
+
+@media screen and (min-width: 1440px) {}
