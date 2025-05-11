@@ -1,8 +1,29 @@
-import { useState, useEffect, useRef } from 'react';
+import { Children, useState, useEffect, useRef } from 'react';
 
 import './App.css';
 import products from './data/data.json';
 
+
+function Button({ children, onClick, className, type, ...props }) {
+  return (
+    <button
+      onClick={onClick}
+      className={'button ' + className}
+      type={type || 'button'}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+}
+
+function ButtonGroup({ children, className }) {
+  return (
+    <div className={'button button--group' + ' ' + className}>
+      {Children.map(children, (child) => child)}
+    </div>
+  );
+}
 
 // utils functions
 function formatProduct(product, productIndex, products) {
@@ -17,7 +38,7 @@ function formatProduct(product, productIndex, products) {
 }
 
 // Product List
-function ProductListItem({ product, addedQuantity, onAddProduct, onRemoveProduct }) {
+function ProductCard({ product, addedQuantity, onAddProduct, onRemoveProduct }) {
   const isAddedInCart = addedQuantity > 0;
   const {
     id,
@@ -35,22 +56,43 @@ function ProductListItem({ product, addedQuantity, onAddProduct, onRemoveProduct
   }
 
   return (
-    <li>
-      <div>{image.thumbnail}</div>
-      <div>{name}</div>
-      <div>{category}</div>
-      <div>{price}</div>
-      {
-        isAddedInCart
-          ? (
-            <div>
-              <button type="button" onClick={handleRemoveProduct}>-</button>
-              <output>{addedQuantity}</output>
-              <button type="button" onClick={handleAddProduct}>+</button>
-            </div>
-          )
-          : (<button type="button" onClick={handleAddProduct}>Add to cart</button>)
-      }
+    <article className='product-card'>
+      <header className='product-card__header'>
+        <img className='product-card__image' src={image.mobile} />
+        {
+          isAddedInCart
+            ? (
+              <ButtonGroup className="product-card__button product-card__button--active button--primary">
+                <div className='circle' onClick={handleRemoveProduct}>
+                  <img src='./assets/images/icon-decrement-quantity.svg' />
+                </div>
+                <output className='flex--grow'>{addedQuantity}</output>
+                <div className='circle' onClick={handleAddProduct}>
+                  <img src='./assets/images/icon-increment-quantity.svg' />
+                </div>
+              </ButtonGroup>
+            )
+            : (
+              <Button className="product-card__button" onClick={handleAddProduct}>
+                <img className='button__icon' src='./assets/images/icon-add-to-cart.svg' alt='add to cart icon' />
+                Add to cart
+              </Button>
+            )
+        }
+      </header >
+      <div className='product-card__body'>
+        <div className='product-card__category'>{category}</div>
+        <div className='product-card__name'>{name}</div>
+        <div className='product-card__price'>${price}</div>
+      </div>
+    </article >
+  )
+}
+
+function ProductListItem({ product, ...props }) {
+  return (
+    <li className='product-card-list__item'>
+      <ProductCard product={product} {...props} />
     </li>
   );
 }
@@ -59,7 +101,7 @@ function ProductList({ products, cartProducts = [], onAddProduct, onRemoveProduc
   return isEmpty
     ? (<p>No product available for this category</p>)
     : (
-      <ul>
+      <ul className='product-card-list'>
         {
           products.map(({ id, ...partialProduct }) => {
             const cartProduct = cartProducts.find(({ id: productId }) => productId === id) || {};
@@ -168,7 +210,12 @@ function Cart({ cart = {}, products = [], onConfirm, onRemoveCartProduct }) {
       <CartHeader cartProducts={cart?.products || []} />
       {
         isCartEmpty
-          ? (<p>Your added items will appear here</p>)
+          ? (
+            <div>
+              <img src='/assets/images/illustration-empty-cart.svg' alt="Empty cart illustration" />
+              <p>Your added items will appear here</p>
+            </div>
+          )
           : (
             <>
               <CartProductList cartProducts={cart?.products || []} products={products} onRemoveCartProduct={onRemoveCartProduct} />
@@ -287,10 +334,10 @@ function App() {
   }
 
   return (
-    <div className="App">
+    <main className="page">
       <form>
-        <section>
-          <h1>Desserts</h1>
+        <section className='products-section'>
+          <h1 className='page__title'>Desserts</h1>
           <div>
             <ProductDisplayContainer
               products={formProducts}
@@ -300,11 +347,10 @@ function App() {
             />
           </div>
         </section>
-        <section>
+        <section className='cart-section'>
           <Cart cart={formData.cart} products={formProducts} onConfirm={handleSubmitForm} onRemoveCartProduct={handleRemoveCartProduct} />
         </section>
       </form>
-      {/* modal */}
       <Modal
         isOpen={isConfirmationModalOpen}
         onClose={() => setIsConfirmationModalOpen(false)}
@@ -314,7 +360,7 @@ function App() {
           <button type='button' onClick={handleResetForm}>Start New Order</button>
         </div>
       </Modal>
-    </div>
+    </main>
   );
 }
 

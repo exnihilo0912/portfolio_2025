@@ -8,6 +8,23 @@
   src: url('../public/assets/fonts/RedHatText-Italic-VariableFont_wght.ttf');
 }
 
+:root {
+  --red: hsl(14, 86%, 42%);
+  --green: hsl(159, 69%, 38%);
+  --rose-50: hsl(20, 50%, 98%);
+  --rose-100: hsl(13, 31%, 94%);
+  --rose-300: hsl(14, 25%, 72%);
+  --rose-400: hsl(7, 20%, 60%);
+  --rose-500: hsl(12, 20%, 44%);
+  --rose-900: hsl(14, 65%, 9%);
+
+  /* typo */
+  --font-weight-thin: 400;
+  --font-weight-regular: 600;
+  --font-weight-bold: 700;
+
+}
+
 * {
   box-sizing: border-box;
 }
@@ -20,23 +37,150 @@ body {
   margin: 0;
   font-size: 16px;
   font-family: 'Red Hat Text';
+  font-weight: var(--font-weight-regular);
+  color: var(--rose-900);
 }
 
-:root {
-  --red: hsl(14, 86%, 42%);
-  --green: hsl(159, 69%, 38%);
-  --rose-50: hsl(20, 50%, 98%);
-  --rose-100: hsl(13, 31%, 94%);
-  --rose-300: hsl(14, 25%, 72%);
-  --rose-400: hsl(7, 20%, 60%);
-  --rose-500: hsl(12, 20%, 44%);
-  --rose-900: hsl(14, 65%, 9%);
-
-  /* typo */
-  --font-weight-regular: 400;
-  --font-weight-semibold: 600;
-  --font-weight-bol: 700;
-
+ul,
+li {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
+
+/* element */
+.button {
+  height: 2.25rem;
+  font-weight: var(--font-weight-regular);
+  padding-left: 32px;
+  padding-right: 32px;
+  border-radius: 90px;
+  border: 1px solid var(--rose-500);
+  background-color: var(--rose-50);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button__icon {
+  margin-right: 8px;
+}
+
+.button--primary {
+  background-color: var(--red);
+  border-color: var(--red);
+  color: var(--rose-100)
+}
+
+.button--group {
+  padding-left: 8px;
+  padding-right: 8px;
+  gap: 16px;
+}
+
+.flex--grow {
+  flex-grow: 2;
+  text-align: center;
+}
+
+.circle {
+  border: 1px solid white;
+  border-radius: 90px;
+  height: 1.1rem;
+  width: 1.1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2px;
+}
+
+.title {}
+
+.text {}
+
+.text--big {}
+
+.text--bigger {}
+
+.text--thin {}
+
+.text--bold {}
+
+.text--accent {}
+
+.text--secondary {}
+
+/* layout */
+.page {
+  padding: 2rem;
+  width: 100%;
+}
+
+/* product list */
+.product-card-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 100%;
+}
+
+.product-card-list__item {
+  max-width: 100%;
+}
+
+.product-card {
+  width: 400px;
+  max-width: 100%;
+}
+
+.product-card__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.product-card__image {
+  width: 100%;
+  border-radius: 15px;
+}
+
+.product-card__body {
+  position: relative;
+  top: -0.5rem;
+}
+
+.product-card__button {
+  position: relative;
+  top: calc(-1.125rem);
+  width: fit-content;
+  min-width: 50%;
+}
+
+.product-card__button--active {
+  flex-grow: 10;
+  flex-grow: 2;
+  align-self: center;
+}
+
+.product-card__category {
+  font-weight: var(--font-weight-thin);
+  font-size: 0.8rem;
+  color: var(--rose-500);
+  line-height: 1.2rem;
+}
+
+.product-card__name {
+  line-height: 1.2rem;
+}
+
+.product-card__price {
+  line-height: 1.2rem;
+  color: var(--red)
+}
+
+
+
+
 
 @media screen and (min-width: 1440px) {}
