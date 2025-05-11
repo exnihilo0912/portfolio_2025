@@ -16,7 +16,10 @@ function Button({ children, onClick, className, type, ...props }) {
     </button>
   );
 }
-
+function IconButton({ children, className, ...props }) {
+  const classes = [className, 'button--icon'].filter(v => v).join(' ');
+  return <Button className={classes} {...props}>{children}</Button>;
+}
 function ButtonGroup({ children, className }) {
   return (
     <div className={'button button--group' + ' ' + className}>
@@ -88,7 +91,6 @@ function ProductCard({ product, addedQuantity, onAddProduct, onRemoveProduct }) 
     </article >
   )
 }
-
 function ProductListItem({ product, ...props }) {
   return (
     <li className='product-card-list__item'>
@@ -164,7 +166,9 @@ function CartProductListItem({ fullCartProduct, onRemoveCartProduct }) {
           <div className='text--secondary text--bold'>${(formattedPrice * quantity).toFixed(2)}</div>
         </div>
       </div>
-      <button type="button" onClick={handleRemoveCartProduct}>Remove</button>
+      <IconButton type="button" onClick={handleRemoveCartProduct}>
+        <img src="./assets/images/icon-remove-item.svg" alt="remove item button icon" />
+      </IconButton>
     </li>
   );
 }

@@ -10,6 +10,8 @@
 
 :root {
   --red: hsl(14, 86%, 42%);
+  --dark-red: hsl(14, 86%, 28%);
+  --darker-red: hsl(14, 86%, 18%);
   --green: hsl(159, 69%, 38%);
   --rose-50: hsl(20, 50%, 98%);
   --rose-100: hsl(13, 31%, 94%);
@@ -63,6 +65,15 @@ li {
   justify-content: center;
 }
 
+.button--icon {
+  min-height: 1rem;
+  min-width: 1rem;
+  height: fit-content;
+  width: fit-content;
+  border: 1px solid var(--rose-300);
+  padding: 2px;
+}
+
 .button__icon {
   margin-right: 8px;
 }
@@ -70,8 +81,20 @@ li {
 .button--primary {
   background-color: var(--red);
   border-color: var(--red);
-  color: var(--rose-100)
+  color: white;
+  transition: all ease 200ms;
 }
+
+.button--primary:hover {
+  background-color: var(--dark-red);
+  border-color: var(--dark-red);
+}
+
+.button--primary:active {
+  background-color: var(--darker-red);
+  border-color: var(--darker-red);
+}
+
 
 .button--group {
   padding-left: 8px;
@@ -223,6 +246,7 @@ li {
 
 .cart__empty-container__image {
   width: 50%;
+  max-width: 300px;
 }
 
 .cart__total-amount {
@@ -238,6 +262,7 @@ li {
   background-color: var(--rose-50);
   justify-content: center;
   border-radius: 5px;
+  font-size: 0.8rem
 }
 
 .cart__amount {
