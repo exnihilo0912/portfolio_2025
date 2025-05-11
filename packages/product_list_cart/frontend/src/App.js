@@ -1,9 +1,22 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 import './App.css';
 import products from './data/data.json';
 
 
+// utils functions
+function formatProduct(product, productIndex, products) {
+  const {
+    name,
+    ...partialProduct
+  } = product;
+  return {
+    ...product,
+    id: name.toLowerCase().replaceAll(' ', '_'),
+  }
+}
+
+// Product List
 function ProductListItem({ product, addedQuantity, onAddProduct, onRemoveProduct }) {
   const isAddedInCart = addedQuantity > 0;
   const {
@@ -77,7 +90,7 @@ function ProductDisplayContainer({ products, cartProducts, onAddProduct, onRemov
   );
 }
 
-
+// Cart
 function CartHeader({ cartProducts }) {
   const productCount = cartProducts.reduce((accumulatedCount, cartProduct) => {
     const { quantity = 0 } = cartProduct;
@@ -137,9 +150,16 @@ function CartDeliveryDisclaimer() {
     </div>
   );
 }
-function Cart({ cart = {}, products = [] }) {
+function Cart({ cart = {}, products = [], onConfirm }) {
   // States: empty | not empty
   const isCartEmpty = !cart?.products?.length;
+  function handleConfirmCart(e) {
+    e.preventDefault();
+
+    if (onConfirm) {
+      onConfirm();
+    }
+  }
 
   return (
     <>
@@ -152,7 +172,7 @@ function Cart({ cart = {}, products = [] }) {
               <CartProductList cartProducts={cart?.products || []} products={products} />
               <CartTotalAmount cart={cart} products={products} />
               <CartDeliveryDisclaimer />
-              <button type='submit'>Confirm</button>
+              <button type='submit' onClick={handleConfirmCart}>Confirm</button>
             </>
           )
       }
@@ -160,31 +180,51 @@ function Cart({ cart = {}, products = [] }) {
   );
 }
 
-function formatProduct(product, productIndex, products) {
-  const {
-    name,
-    ...partialProduct
-  } = product;
-  return {
-    ...product,
-    id: name.toLowerCase().replaceAll(' ', '_'),
-  }
-}
-
-const initialCartProducts = [
-  {
-    id: 'waffle_with_berries',
-    quantity: 10,
-  },
-];
 const initialCart = {
-  products: initialCartProducts,
+  products: [],
 };
+const initialFormData = { cart: initialCart };
+
+// Modal
+function Modal({ children, isOpen, onClose }) {
+  // States: opened, closed
+  const dialogRef = useRef(null);
+
+  function handleCloseModal() {
+    if (onClose) {
+      onClose();
+    }
+    dialogRef?.current.close();
+  }
+
+  useEffect(() => {
+    if (dialogRef?.current) {
+      const { current: dialogElement } = dialogRef;
+
+      if (isOpen && !dialogElement.open) {
+        dialogElement.showModal();
+      }
+
+      else if (!isOpen && dialogElement.open) {
+        handleCloseModal();
+      }
+    }
+  }, [isOpen])
+
+  return (
+    <dialog ref={dialogRef}>
+      {children}
+      <footer>
+        <button type='button' onClick={handleCloseModal}>Close</button>
+      </footer>
+    </dialog>
+  )
+}
 
 function App() {
   const formProducts = products.map(formatProduct);
-  const [formData, setFormData] = useState({ cart: initialCart });
-
+  const [formData, setFormData] = useState(initialFormData);
+  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
   function handleAddProduct(e, { id }) {
     const { cart } = formData;
     const { products: cartProdutcs } = cart;
@@ -225,6 +265,16 @@ function App() {
       }
     });
   }
+  function handleOpenConfirmationModal() {
+    setIsConfirmationModalOpen(true);
+  }
+  function handleSubmitForm() {
+    handleOpenConfirmationModal();
+  }
+  function handleResetForm() {
+    setFormData(initialFormData);
+    setIsConfirmationModalOpen(false);
+  }
 
   return (
     <div className="App">
@@ -241,10 +291,19 @@ function App() {
           </div>
         </section>
         <section>
-          <Cart cart={formData.cart} products={formProducts} />
+          <Cart cart={formData.cart} products={formProducts} onConfirm={handleSubmitForm} />
         </section>
       </form>
       {/* modal */}
+      <Modal
+        isOpen={isConfirmationModalOpen}
+        onClose={() => setIsConfirmationModalOpen(false)}
+      >
+        <div>
+          <p>Modal content</p>
+          <button type='button' onClick={handleResetForm}>Start New Order</button>
+        </div>
+      </Modal>
     </div>
   );
 }
