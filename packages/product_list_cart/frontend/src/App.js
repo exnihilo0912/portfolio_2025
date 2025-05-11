@@ -146,23 +146,31 @@ function CartProductListItem({ fullCartProduct, onRemoveCartProduct }) {
     id,
     name,
     quantity,
+    price,
   } = fullCartProduct;
+  const formattedPrice = price.toFixed(2);
+
   function handleRemoveCartProduct() {
     onRemoveCartProduct({ id });
   }
+
   return (
-    <li>
-      <div>
+    <li className='cart-product-list__item'>
+      <div className='cart-product-list__item__details'>
         <div>{name}</div>
-        <div>({quantity})</div>
-        <div><button type="button" onClick={handleRemoveCartProduct}>Remove</button></div>
+        <div className='cart-product-list__item__unit-price'>
+          <div className='text--accent text--bold'>{quantity}x</div>
+          <div className='text--secondary'>@ ${formattedPrice}</div>
+          <div className='text--secondary text--bold'>${(formattedPrice * quantity).toFixed(2)}</div>
+        </div>
       </div>
+      <button type="button" onClick={handleRemoveCartProduct}>Remove</button>
     </li>
   );
 }
 function CartProductList({ cartProducts, products, onRemoveCartProduct }) {
   return (
-    <ul>
+    <ul className='cart-product-list'>
       {
         cartProducts.map(({ id: productId, quantity }) => {
           const product = products.find(({ id }) => productId === id);
@@ -185,12 +193,18 @@ function CartTotalAmount({ cart, products }) {
     return (accumulatedAmount + (quantity * price));
   }, 0);
 
-  return (<p>total: USD {totalAmount}</p>);
+  return (
+    <p className='cart__total-amount'>
+      <span>Order Total</span>
+      <span className='cart__amount'>${totalAmount.toFixed(2)}</span>
+    </p>
+  );
 }
 function CartDeliveryDisclaimer() {
   return (
-    <div>
-      <p>Disclaimer</p>
+    <div className='cart__disclaimer'>
+      <img src="./assets/images/icon-carbon-neutral.svg" alt="carbon neutral icon" />
+      <p>This is a <span className="text--bold">carbon-neutral</span> delivery</p>
     </div>
   );
 }
@@ -220,8 +234,10 @@ function Cart({ cart = {}, products = [], onConfirm, onRemoveCartProduct }) {
             <>
               <CartProductList cartProducts={cart?.products || []} products={products} onRemoveCartProduct={onRemoveCartProduct} />
               <CartTotalAmount cart={cart} products={products} />
-              <CartDeliveryDisclaimer />
-              <button type='submit' onClick={handleConfirmCart}>Confirm</button>
+              <footer className='cart__footer'>
+                <CartDeliveryDisclaimer />
+                <Button className="button--primary cart__submit-button" type='submit' onClick={handleConfirmCart}>Confirm Order</Button>
+              </footer>
             </>
           )
       }
