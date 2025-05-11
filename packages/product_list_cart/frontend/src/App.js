@@ -99,31 +99,33 @@ function CartHeader({ cartProducts }) {
   }, 0);
   return (<h2>Your Cart ({productCount})</h2>);
 }
-function CartProductListItem({ fullCartProduct }) {
+function CartProductListItem({ fullCartProduct, onRemoveCartProduct }) {
   const {
     id,
     name,
     quantity,
   } = fullCartProduct;
+  function handleRemoveCartProduct() {
+    onRemoveCartProduct({ id });
+  }
   return (
     <li>
       <div>
         <div>{name}</div>
         <div>({quantity})</div>
-        <div><button type="button">Remove</button></div>
+        <div><button type="button" onClick={handleRemoveCartProduct}>Remove</button></div>
       </div>
     </li>
   );
 }
-function CartProductList({ cartProducts, products }) {
-  console.log({ cartProducts });
+function CartProductList({ cartProducts, products, onRemoveCartProduct }) {
   return (
     <ul>
       {
         cartProducts.map(({ id: productId, quantity }) => {
           const product = products.find(({ id }) => productId === id);
           const { id, name } = product;
-          return (<CartProductListItem key={id} fullCartProduct={{ ...product, quantity }} />);
+          return (<CartProductListItem key={id} fullCartProduct={{ ...product, quantity }} onRemoveCartProduct={onRemoveCartProduct} />);
         })
       }
     </ul>
@@ -150,7 +152,7 @@ function CartDeliveryDisclaimer() {
     </div>
   );
 }
-function Cart({ cart = {}, products = [], onConfirm }) {
+function Cart({ cart = {}, products = [], onConfirm, onRemoveCartProduct }) {
   // States: empty | not empty
   const isCartEmpty = !cart?.products?.length;
   function handleConfirmCart(e) {
@@ -169,7 +171,7 @@ function Cart({ cart = {}, products = [], onConfirm }) {
           ? (<p>Your added items will appear here</p>)
           : (
             <>
-              <CartProductList cartProducts={cart?.products || []} products={products} />
+              <CartProductList cartProducts={cart?.products || []} products={products} onRemoveCartProduct={onRemoveCartProduct} />
               <CartTotalAmount cart={cart} products={products} />
               <CartDeliveryDisclaimer />
               <button type='submit' onClick={handleConfirmCart}>Confirm</button>
@@ -275,6 +277,14 @@ function App() {
     setFormData(initialFormData);
     setIsConfirmationModalOpen(false);
   }
+  function handleRemoveCartProduct({ id }) {
+    setFormData({
+      ...formData,
+      cart: {
+        products: formData?.cart?.products.filter(({ id: cartProductId }) => id !== cartProductId),
+      }
+    });
+  }
 
   return (
     <div className="App">
@@ -291,7 +301,7 @@ function App() {
           </div>
         </section>
         <section>
-          <Cart cart={formData.cart} products={formProducts} onConfirm={handleSubmitForm} />
+          <Cart cart={formData.cart} products={formProducts} onConfirm={handleSubmitForm} onRemoveCartProduct={handleRemoveCartProduct} />
         </section>
       </form>
       {/* modal */}
