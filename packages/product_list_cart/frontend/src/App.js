@@ -249,13 +249,48 @@ function Cart({ cart = {}, products = [], onConfirm, onRemoveCartProduct }) {
   );
 }
 
+// Modal
+function ConfirmedCartProductList({ fullCartProducts }) {
+  return (
+    <ul className='cart-product-list'>
+      {fullCartProducts.map((fullCartProduct) => {
+        const {
+          id,
+          image,
+          name,
+          price,
+          quantity,
+        } = fullCartProduct;
+        console.log({ fullCartProduct })
+        return (
+          <li key={id}>
+            <article className='confirmed-cart-product'>
+              <img className='confirmed-cart-product__image' src={image.thumbnail} />
+              <div className='confirmed-cart-product__details'>
+                <div>{name}</div>
+                <div className='confirmed-cart-product__unit-price'>
+                  <div className='text--accent'>{quantity}x</div>
+                  <div className='text--thin text--secondary'>@ ${price.toFixed(2)}</div>
+                </div>
+              </div>
+              <div className='confirmed-cart-product__total-price text--big'>
+                ${(price * quantity)?.toFixed(2)}
+              </div>
+            </article>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
 const initialCart = {
   products: [],
 };
 const initialFormData = { cart: initialCart };
 
 // Modal
-function Modal({ children, isOpen, onClose }) {
+function Modal({ children, isOpen, onClose, withCloseButton = true }) {
   // States: opened, closed
   const dialogRef = useRef(null);
 
@@ -281,11 +316,18 @@ function Modal({ children, isOpen, onClose }) {
   }, [isOpen])
 
   return (
-    <dialog ref={dialogRef}>
+    <dialog className="modal" ref={dialogRef}>
       {children}
-      <footer>
-        <button type='button' onClick={handleCloseModal}>Close</button>
-      </footer>
+      {withCloseButton &&
+        <footer>
+          <Button
+            className="button--primary"
+            onClick={handleCloseModal}
+          >
+            Close
+          </Button>
+        </footer>
+      }
     </dialog>
   )
 }
@@ -353,6 +395,25 @@ function App() {
     });
   }
 
+  const fullCartProducts = formData.cart.products.map((cartProduct) => {
+    const product = formProducts.find(({ id }) => id === cartProduct.id) || {};
+    console.log({ product });
+    return {
+      ...cartProduct,
+      ...product,
+    }
+  });
+  const totalAmount = formData?.cart?.products.reduce((accumulatedAmount, cartProduct) => {
+    const { id, quantity } = cartProduct;
+    const { price } = formProducts.find(({ id: productId }) => productId === id) || {};
+
+    if (!price) {
+      return accumulatedAmount;
+    }
+
+    return (accumulatedAmount + (quantity * price));
+  }, 0);
+
   return (
     <main className="page">
       <form>
@@ -374,10 +435,28 @@ function App() {
       <Modal
         isOpen={isConfirmationModalOpen}
         onClose={() => setIsConfirmationModalOpen(false)}
+        withCloseButton={false}
       >
         <div>
-          <p>Modal content</p>
-          <button type='button' onClick={handleResetForm}>Start New Order</button>
+          <header className='modal__header'>
+            <img className='modal__header__icon' src="./assets/images/icon-order-confirmed.svg" alt="order confirmed success icon" />
+            <p className='page__title text--bold'>Order Confirmed</p>
+            <p className='text--secondary'>We hope you enjoy your food!</p>
+          </header>
+          <div className='modal__content'>
+            <ConfirmedCartProductList fullCartProducts={fullCartProducts} />
+            <div className='modal__order-total'>
+              <span>Order Total</span>
+              <span className='text--bigger text--bold'>
+                ${totalAmount.toFixed(2)}
+              </span>
+            </div>
+          </div>
+          <footer className='modal__footer'>
+            <Button className="button--primary button--block" onClick={handleResetForm}>
+              Start New Order
+            </Button>
+          </footer>
         </div>
       </Modal>
     </main>
