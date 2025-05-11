@@ -88,6 +88,7 @@ li {
   border: 1px solid var(--rose-300);
   padding: 2px;
   transition: all ease 200ms;
+  background-color: transparent;
 }
 
 .button--icon:hover {
@@ -379,8 +380,12 @@ li {
   width: 100%;
   max-width: 100%;
   margin: 0;
-  padding: 2rem 1rem 1rem 1rem;
+  padding: 2rem 1rem 0 1rem;
   border-radius: 20px 20px 0 0;
+}
+
+.modal::backdrop {
+  background-color: hsl(0, 0%, 0%, 80%);
 }
 
 .modal__header {}

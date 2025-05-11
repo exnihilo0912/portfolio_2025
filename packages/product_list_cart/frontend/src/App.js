@@ -66,13 +66,13 @@ function ProductCard({ product, addedQuantity, onAddProduct, onRemoveProduct }) 
           isAddedInCart
             ? (
               <ButtonGroup className="product-card__button product-card__button--active button--primary">
-                <div className='circle' onClick={handleRemoveProduct}>
+                <IconButton className='circle' onClick={handleRemoveProduct}>
                   <img src='./assets/images/icon-decrement-quantity.svg' />
-                </div>
+                </IconButton>
                 <output className='flex--grow'>{addedQuantity}</output>
-                <div className='circle' onClick={handleAddProduct}>
+                <IconButton className='circle' onClick={handleAddProduct}>
                   <img src='./assets/images/icon-increment-quantity.svg' />
-                </div>
+                </IconButton>
               </ButtonGroup>
             )
             : (
