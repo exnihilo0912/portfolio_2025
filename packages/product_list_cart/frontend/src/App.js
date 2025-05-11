@@ -83,7 +83,7 @@ function ProductCard({ product, addedQuantity, onAddProduct, onRemoveProduct }) 
       <div className='product-card__body'>
         <div className='product-card__category'>{category}</div>
         <div className='product-card__name'>{name}</div>
-        <div className='product-card__price'>${price}</div>
+        <div className='product-card__price'>${Number.parseFloat(price).toFixed(2)}</div>
       </div>
     </article >
   )
