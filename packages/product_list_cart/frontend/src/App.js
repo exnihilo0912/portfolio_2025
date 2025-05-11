@@ -139,7 +139,7 @@ function CartHeader({ cartProducts }) {
 
     return accumulatedCount + quantity;
   }, 0);
-  return (<h2>Your Cart ({productCount})</h2>);
+  return (<h2 className='cart__title'>Your Cart ({productCount})</h2>);
 }
 function CartProductListItem({ fullCartProduct, onRemoveCartProduct }) {
   const {
@@ -206,13 +206,13 @@ function Cart({ cart = {}, products = [], onConfirm, onRemoveCartProduct }) {
   }
 
   return (
-    <>
+    <div className='cart'>
       <CartHeader cartProducts={cart?.products || []} />
       {
         isCartEmpty
           ? (
-            <div>
-              <img src='/assets/images/illustration-empty-cart.svg' alt="Empty cart illustration" />
+            <div className='cart__empty-container'>
+              <img className='cart__empty-container__image' src='/assets/images/illustration-empty-cart.svg' alt="Empty cart illustration" />
               <p>Your added items will appear here</p>
             </div>
           )
@@ -225,7 +225,7 @@ function Cart({ cart = {}, products = [], onConfirm, onRemoveCartProduct }) {
             </>
           )
       }
-    </>
+    </div>
   );
 }
 
