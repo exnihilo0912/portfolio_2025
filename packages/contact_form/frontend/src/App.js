@@ -54,6 +54,14 @@ function App() {
           <button className='button' type='submit'>CTA</button>
         </footer>
       </form>
+      <div className='toast'>
+        <header className='toast__header'>
+          Message Sent!
+        </header>
+        <p className='toast__content'>
+          Thanks for completing the form. We'll be in touch soon!
+        </p>
+      </div>
     </div>
   );
 }
