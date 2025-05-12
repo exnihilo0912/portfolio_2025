@@ -171,6 +171,19 @@ li {
 }
 
 /* layout */
+
+.product-form {
+  width: 100%;
+}
+
+.products-section {
+  width: 100%;
+}
+
+.cart-section {
+  width: 100%;
+}
+
 .page {
   padding: 2rem;
   width: 100%;
@@ -415,10 +428,9 @@ li {
 
 .products-section {
   margin: auto;
-  width: fit-content;
 }
 
-@media screen and (min-width: 1240px) {
+@media screen and (min-width: 1440px) {
   .product-form {
     display: flex;
     gap: 1rem;
