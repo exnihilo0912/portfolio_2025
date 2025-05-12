@@ -1,5 +1,23 @@
-import logo from './logo.svg';
 import './App.css';
+
+function InputGroup({ label, type = 'text', required = false }) {
+  const errorMessage = 'This field is required';
+
+  return (
+    <div>
+      <label className='input-group'>
+        <span className='input-group__label'>{label}</span>
+        {
+          type === 'textarea'
+            ? <textarea />
+            : <input className='input-group__input' type={type} />
+        }
+      </label>
+      <p>{errorMessage}</p>
+    </div>
+  );
+}
+
 
 function App() {
   return (
@@ -10,20 +28,10 @@ function App() {
         </header>
         <div className='contact-form__content'>
           <div className='input-block'>
-            <label className='input-group'>
-              <span className='input-group__label'>first name</span>
-              <input className='input-group__input' type='text' />
-              {/* error message */}
-            </label>
-            <label className='input-group'>
-              <span className='input-group__label'>last name</span>
-              <input className='input-group__input' type='text' />
-            </label>
+            <InputGroup label="First Name" required={true} />
+            <InputGroup label="Lirst Name" required={true} />
           </div>
-          <label className='input-group'>
-            <span className='input-group__label'>email address</span>
-            <input className='input-group__input' type='text' />
-          </label>
+          <InputGroup label="Email Address" type="email" required={true} />
           <fieldset>
             <legend>Query Type</legend>
             <ul className='radio-input-list'>
@@ -41,10 +49,7 @@ function App() {
               </li>
             </ul>
           </fieldset>
-          <label className='input-group'>
-            <span className='input-group__label'>Message</span>
-            <textarea />
-          </label>
+          <InputGroup label="Message" type="textarea" required={true} />
           <label className='input-group'>
             <input className='input-group__input' type='checkbox' />
             <span className='input-group__label'>I consent to being contacted by the team</span>
