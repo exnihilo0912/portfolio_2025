@@ -200,7 +200,7 @@ function CartTotalAmount({ cart, products }) {
   return (
     <p className='cart__total-amount'>
       <span>Order Total</span>
-      <span className='cart__amount'>${totalAmount.toFixed(2)}</span>
+      <span className='text--bigger text--bold'>${totalAmount.toFixed(2)}</span>
     </p>
   );
 }
@@ -252,7 +252,7 @@ function Cart({ cart = {}, products = [], onConfirm, onRemoveCartProduct }) {
 // Modal
 function ConfirmedCartProductList({ fullCartProducts }) {
   return (
-    <ul className='cart-product-list'>
+    <ul className='cart-product-list cart-product-list--pink'>
       {fullCartProducts.map((fullCartProduct) => {
         const {
           id,
@@ -261,22 +261,38 @@ function ConfirmedCartProductList({ fullCartProducts }) {
           price,
           quantity,
         } = fullCartProduct;
-        console.log({ fullCartProduct })
         return (
-          <li key={id}>
-            <article className='confirmed-cart-product'>
-              <img className='confirmed-cart-product__image' src={image.thumbnail} />
-              <div className='confirmed-cart-product__details'>
-                <div>{name}</div>
-                <div className='confirmed-cart-product__unit-price'>
-                  <div className='text--accent'>{quantity}x</div>
-                  <div className='text--thin text--secondary'>@ ${price.toFixed(2)}</div>
+          // <li key={id}>
+          //   <article className='confirmed-cart-product'>
+          //     <img className='confirmed-cart-product__image' src={image.thumbnail} />
+          //     <div className='confirmed-cart-product__details'>
+          //       <div>{name}</div>
+          //       <div className='confirmed-cart-product__unit-price'>
+          //         <div className='text--accent'>{quantity}x</div>
+          //         <div className='text--thin text--secondary'>@ ${price.toFixed(2)}</div>
+          //       </div>
+          //     </div>
+          //     <div className='confirmed-cart-product__total-price text--big'>
+          //       ${(price * quantity)?.toFixed(2)}
+          //     </div>
+          //   </article>
+          // </li>
+          <li key={id} className='cart-product-list__item'>
+            <div className='cart-product-list__item__details'>
+              <article className='confirmed-cart-product'>
+                <img className='confirmed-cart-product__image' src={image.thumbnail} />
+                <div className='confirmed-cart-product__details'>
+                  <div>{name}</div>
+                  <div className='cart-product-list__item__unit-price'>
+                    <div className='text--accent'>{quantity}x</div>
+                    <div className='text--secondary'>@ ${price.toFixed(2)}</div>
+                  </div>
                 </div>
-              </div>
-              <div className='confirmed-cart-product__total-price text--big'>
-                ${(price * quantity)?.toFixed(2)}
-              </div>
-            </article>
+                <div className='confirmed-cart-product__total-price text--big'>
+                  ${(price * quantity)?.toFixed(2)}
+                </div>
+              </article>
+            </div>
           </li>
         );
       })}
@@ -291,7 +307,6 @@ const initialFormData = { cart: initialCart };
 
 // Modal
 function Modal({ children, isOpen, onClose, withCloseButton = true }) {
-  // States: opened, closed
   const dialogRef = useRef(null);
 
   function handleCloseModal() {
@@ -300,7 +315,11 @@ function Modal({ children, isOpen, onClose, withCloseButton = true }) {
     }
     dialogRef?.current.close();
   }
-
+  const handleKeyDown = (event) => {
+    if (event.key === "Escape") {
+      handleCloseModal();
+    }
+  };
   useEffect(() => {
     if (dialogRef?.current) {
       const { current: dialogElement } = dialogRef;
@@ -316,7 +335,7 @@ function Modal({ children, isOpen, onClose, withCloseButton = true }) {
   }, [isOpen])
 
   return (
-    <dialog className="modal" ref={dialogRef}>
+    <dialog className="modal" ref={dialogRef} onKeyDown={handleKeyDown}>
       {children}
       {withCloseButton &&
         <footer>
@@ -416,7 +435,7 @@ function App() {
 
   return (
     <main className="page">
-      <form>
+      <form className='product-form'>
         <section className='products-section'>
           <h1 className='page__title'>Desserts</h1>
           <div>

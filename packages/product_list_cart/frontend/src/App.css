@@ -64,6 +64,7 @@ li {
   align-items: center;
   justify-content: center;
   transition: all ease 200ms;
+  outline: none;
 }
 
 .button:hover {
@@ -196,7 +197,7 @@ li {
 }
 
 .product-card {
-  width: 400px;
+  width: 350px;
   max-width: 100%;
 }
 
@@ -217,6 +218,9 @@ li {
 }
 
 .product-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
   position: relative;
   top: -0.5rem;
 }
@@ -295,11 +299,6 @@ li {
   font-size: 0.8rem
 }
 
-.cart__amount {
-  font-size: 2rem;
-  font-weight: var(--font-weight-bold);
-}
-
 .cart__footer {
   padding: 1rem;
   display: flex;
@@ -316,7 +315,7 @@ li {
 .cart-product-list {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 0.5rem;
 }
 
 .cart-product-list__item {
@@ -329,6 +328,7 @@ li {
 }
 
 .cart-product-list__item__details {
+  width: 100%;
   display: flex;
   flex-direction: column;
   font-weight: var(--font-weight-bold);
@@ -358,6 +358,7 @@ li {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  font-weight: var(--font-weight-regular);
 }
 
 .confirmed-cart-product__unit-price {
@@ -368,6 +369,7 @@ li {
 .confirmed-cart-product__total-price {
   display: flex;
   gap: 8px;
+  font-weight: var(--font-weight-regular);
 }
 
 .modal {
@@ -411,4 +413,62 @@ li {
   align-items: center;
 }
 
-@media screen and (min-width: 1440px) {}
+.products-section {
+  margin: auto;
+  width: fit-content;
+}
+
+@media screen and (min-width: 1240px) {
+  .product-form {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .products-section {
+    width: 70%;
+  }
+
+  .cart-section {
+    width: 30%;
+  }
+
+  .text--bigger {
+    font-size: 1.7rem;
+  }
+
+  .modal {
+    width: 40%;
+    height: fit-content;
+    border: none;
+    margin: auto;
+    padding: 2rem;
+    border-radius: 10px;
+  }
+
+  .page__title {
+    font-size: 2.5rem;
+    line-height: 3.5rem;
+    margin: 1rem 0 1rem;
+    padding: 0;
+  }
+
+  .modal__content {
+    margin: 1rem 0 3rem 0;
+    padding: 1rem 1rem 2rem 1rem;
+    background-color: var(--rose-50);
+    border-radius: 10px;
+  }
+
+  .modal__order-total {
+    margin-top: 2rem;
+  }
+
+  .cart-product-list__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--rose-100);
+    padding-top: 0.5rem;
+    padding-bottom: 1.5rem;
+  }
+}
