@@ -155,8 +155,8 @@ function App() {
             value={formData.email}
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
           />
-          <fieldset>
-            <legend>Query Type</legend>
+          <fieldset className='radio-input-group'>
+            <legend className='radio-input-group__groupl-label'>Query Type</legend>
             <ul className='radio-input-list'>
               <li className='radio-input-list__item'>
                 <input className='radio-input-group__input' type='radio' />
