@@ -12,8 +12,6 @@ function InputGroup(props) {
     onChange,
     hasError,
   } = props;
-  // states: idle, focus, valid, invalid
-  // visual states: idle, active, hover
   const errorMessage = 'This field is required';
 
   return (
@@ -43,9 +41,28 @@ function InputGroup(props) {
   );
 }
 
+function Toast() {
+  return (
+    <div className='toast'>
+      <header className='toast__header'>
+        <img src='./assets/images/icon-success-check.svg' alt="message sent icon" />
+        <p>Message Sent!</p>
+      </header>
+      <p className='toast__content'>
+        Thanks for completing the form. We'll be in touch soon!
+      </p>
+    </div>
+  );
+}
 
 function App() {
   const [formData, setFormData] = useState({});
+  const [isFormSent, setIsFormSent] = useState(false);
+
+  function handleSendForm(e) {
+    e.preventDefault();
+    setIsFormSent(true);
+  }
 
   return (
     <div className='page'>
@@ -112,20 +129,13 @@ function App() {
           </label>
         </div>
         <footer className='contact-form__footer'>
-          <button className='button' type='submit'>Submit</button>
+          <button className='button' type='submit' onClick={handleSendForm}>Submit</button>
         </footer>
       </form>
       <output style={{ background: 'white', padding: '1rem', margin: '2rem', display: 'block' }}>
         {JSON.stringify(formData)}
       </output>
-      <div className='toast'>
-        <header className='toast__header'>
-          Message Sent!
-        </header>
-        <p className='toast__content'>
-          Thanks for completing the form. We'll be in touch soon!
-        </p>
-      </div>
+      {isFormSent && <Toast />}
     </div>
   );
 }

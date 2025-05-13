@@ -154,17 +154,37 @@ h6 {
   border-radius: 5px;
   width: 100%;
   font-weight: var(--text-weight-bold);
+  transition: all ease 200ms;
+  cursor: pointer;
 }
+
+.button:hover {
+  background-color: var(--grey-900);
+}
+
+.button:active {
+  background-color: var(--green-600);
+}
+
 
 .toast {
   padding: 24px;
   background-color: var(--grey-900);
   color: var(--white);
   width: fit-content;
+  max-width: 95%;
   border-radius: 10px;
+  margin: auto;
+  position: fixed;
+  top: 2rem;
+  left: 0;
+  right: 0;
 }
 
 .toast__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-weight: var(--text-weight-bold);
   margin-bottom: 8px;
 }
