@@ -4,15 +4,15 @@ function InputGroup({ label, type = 'text', required = false }) {
   const errorMessage = 'This field is required';
 
   return (
-    <div>
-      <label className='input-group'>
-        <span className='input-group__label'>{label}</span>
-        {
-          type === 'textarea'
-            ? <textarea />
-            : <input className='input-group__input' type={type} />
-        }
+    <div className='input-group'>
+      <label className='input-group__label'>
+        {label}
       </label>
+      {
+        type === 'textarea'
+          ? <textarea className='input-group__input' />
+          : <input className='input-group__input' type={type} />
+      }
       <p>{errorMessage}</p>
     </div>
   );
@@ -21,7 +21,7 @@ function InputGroup({ label, type = 'text', required = false }) {
 
 function App() {
   return (
-    <div className="page">
+    <div className='page'>
       <form className='contact-form'>
         <header className='contact-form__header'>
           <h1>Contact Us</h1>
@@ -29,7 +29,7 @@ function App() {
         <div className='contact-form__content'>
           <div className='input-block'>
             <InputGroup label="First Name" required={true} />
-            <InputGroup label="Lirst Name" required={true} />
+            <InputGroup label="Last Name" required={true} />
           </div>
           <InputGroup label="Email Address" type="email" required={true} />
           <fieldset>
