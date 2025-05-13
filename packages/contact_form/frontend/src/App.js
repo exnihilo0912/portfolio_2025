@@ -76,7 +76,7 @@ function InputGroup(props) {
       {
         type === 'textarea'
           ? (<textarea
-            className={'input-group__input' + (hasError ? ' input-group__input--error' : '')}
+            className={'input-group__textarea' + (hasError ? ' input-group__input--error' : '')}
             name={name}
             value={value}
             required={required}
