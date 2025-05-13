@@ -139,7 +139,8 @@ h6 {
   border-color: var(--green-600);
 }
 
-.input-group__input.input-group__input--error {
+.input-group__input.input-group__input--error,
+.input-group__input:invalid {
   border-color: var(--red);
 }
 

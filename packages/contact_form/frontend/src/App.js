@@ -1,6 +1,6 @@
 import './App.css';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 function InputGroup(props) {
   const {
@@ -10,9 +10,19 @@ function InputGroup(props) {
     required = false,
     value,
     onChange,
-    hasError,
+    hasError: initialHasError,
   } = props;
   const errorMessage = 'This field is required';
+  const [hasError, setHasError] = useState(initialHasError);
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (!inputRef.current) {
+      return;
+    }
+    const inputElement = inputRef.current;
+    inputElement.addEventListener('invalid', () => setHasError(true));
+  }, []);
 
   return (
     <div className='input-group'>
@@ -26,6 +36,7 @@ function InputGroup(props) {
             name={name}
             value={value}
             onChange={onChange}
+            ref={inputRef}
           />)
           : (<input
             className={'input-group__input' + (hasError ? ' input-group__input--error' : '')}
@@ -34,6 +45,7 @@ function InputGroup(props) {
             required={required}
             value={value}
             onChange={onChange}
+            ref={inputRef}
           />)
       }
       {hasError && <p className='input-group__error-message'>{errorMessage}</p>}
@@ -60,7 +72,7 @@ function App() {
   const [isFormSent, setIsFormSent] = useState(false);
 
   function handleSendForm(e) {
-    e.preventDefault();
+    // e.preventDefault();
     setIsFormSent(true);
   }
 
@@ -75,7 +87,6 @@ function App() {
             <InputGroup
               label="First Name"
               name="firstName"
-              hasError
               required={true}
               value={formData.firstName}
               onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
