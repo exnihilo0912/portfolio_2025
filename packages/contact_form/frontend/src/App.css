@@ -93,6 +93,10 @@ h6 {
   gap: 16px;
 }
 
+.contact-form__footer {
+  margin-top: 2rem;
+}
+
 .input-group {
   display: flex;
   flex-direction: column;
@@ -108,4 +112,61 @@ h6 {
 
 .input-group__label {}
 
-.input-group__input {}
+.input-group__label--required::after {
+  content: ' *';
+  color: var(--green-600);
+}
+
+.input-group__error-message {
+  color: var(--red);
+}
+
+.input-group__input[type='text'],
+.input-group__input[type='email'] {
+  height: 3rem;
+  border-radius: 10px;
+  border: 1px solid var(--grey-500);
+  outline: none;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.input-group__input:hover {
+  border-color: var(--green-600);
+}
+
+.input-group__input:active {
+  border-color: var(--green-600);
+}
+
+.input-group__input.input-group__input--error {
+  border-color: var(--red);
+}
+
+/* Component - Atomic */
+.button {
+  height: 3rem;
+  border: 1px solid var(--green-600);
+  background: var(--green-600);
+  color: var(--white);
+  padding-left: 32px;
+  padding-right: 32px;
+  border-radius: 5px;
+  width: 100%;
+  font-weight: var(--text-weight-bold);
+}
+
+.toast {
+  padding: 24px;
+  background-color: var(--grey-900);
+  color: var(--white);
+  width: fit-content;
+  border-radius: 10px;
+}
+
+.toast__header {
+  font-weight: var(--text-weight-bold);
+  margin-bottom: 8px;
+}
+
+.toast__content {}

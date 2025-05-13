@@ -1,25 +1,52 @@
 import './App.css';
 
-function InputGroup({ label, type = 'text', required = false }) {
+import { useState } from 'react';
+
+function InputGroup(props) {
+  const {
+    label,
+    name,
+    type = 'text',
+    required = false,
+    value,
+    onChange,
+    hasError,
+  } = props;
+  // states: idle, focus, valid, invalid
+  // visual states: idle, active, hover
   const errorMessage = 'This field is required';
 
   return (
     <div className='input-group'>
-      <label className='input-group__label'>
+      <label className={'input-group__label' + (required ? ' input-group__label--required' : '')} htmlFor={name}>
         {label}
       </label>
       {
         type === 'textarea'
-          ? <textarea className='input-group__input' />
-          : <input className='input-group__input' type={type} />
+          ? (<textarea
+            className={'input-group__input' + (hasError ? ' input-group__input--error' : '')}
+            name={name}
+            value={value}
+            onChange={onChange}
+          />)
+          : (<input
+            className={'input-group__input' + (hasError ? ' input-group__input--error' : '')}
+            type={type}
+            name={name}
+            required={required}
+            value={value}
+            onChange={onChange}
+          />)
       }
-      <p>{errorMessage}</p>
+      {hasError && <p className='input-group__error-message'>{errorMessage}</p>}
     </div>
   );
 }
 
 
 function App() {
+  const [formData, setFormData] = useState({});
+
   return (
     <div className='page'>
       <form className='contact-form'>
@@ -28,10 +55,30 @@ function App() {
         </header>
         <div className='contact-form__content'>
           <div className='input-block'>
-            <InputGroup label="First Name" required={true} />
-            <InputGroup label="Last Name" required={true} />
+            <InputGroup
+              label="First Name"
+              name="firstName"
+              hasError
+              required={true}
+              value={formData.firstName}
+              onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+            />
+            <InputGroup
+              label="Last Name"
+              name="lastName"
+              required={true}
+              value={formData.lastName}
+              onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+            />
           </div>
-          <InputGroup label="Email Address" type="email" required={true} />
+          <InputGroup
+            label="Email Address"
+            name="email"
+            type="email"
+            required={true}
+            value={formData.email}
+            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+          />
           <fieldset>
             <legend>Query Type</legend>
             <ul className='radio-input-list'>
@@ -49,16 +96,28 @@ function App() {
               </li>
             </ul>
           </fieldset>
-          <InputGroup label="Message" type="textarea" required={true} />
+          <InputGroup
+            label="Message"
+            name="message"
+            type="textarea"
+            required={true}
+            value={formData.message}
+            onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+          />
           <label className='input-group'>
             <input className='input-group__input' type='checkbox' />
-            <span className='input-group__label'>I consent to being contacted by the team</span>
+            <span className='input-group__label'>
+              I consent to being contacted by the team
+            </span>
           </label>
         </div>
         <footer className='contact-form__footer'>
-          <button className='button' type='submit'>CTA</button>
+          <button className='button' type='submit'>Submit</button>
         </footer>
       </form>
+      <output style={{ background: 'white', padding: '1rem', margin: '2rem', display: 'block' }}>
+        {JSON.stringify(formData)}
+      </output>
       <div className='toast'>
         <header className='toast__header'>
           Message Sent!
