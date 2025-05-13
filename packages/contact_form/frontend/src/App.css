@@ -144,6 +144,25 @@ h6 {
   border-color: var(--red);
 }
 
+.checkbox-input-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.checkbox-input-group__main {
+  display: flex;
+  gap: 8px;
+}
+
+.checkbox-input-group__label {}
+
+.checkbox-input-group__label--required::after {
+  content: ' *';
+  color: var(--green-600);
+}
+
+.checkbox-input-group__input {}
+
 /* Component - Atomic */
 .button {
   height: 3rem;

@@ -2,6 +2,49 @@ import './App.css';
 
 import { useState, useEffect, useRef } from 'react';
 
+function CheckboxInputGroup(props) {
+  const {
+    label,
+    name,
+    value,
+    required,
+    onChange,
+    errorMessage,
+    hasError: initialHasError
+  } = props;
+  const [hasError, setHasError] = useState(initialHasError);
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (!inputRef.current) {
+      return;
+    }
+    const inputElement = inputRef.current;
+    inputElement.addEventListener('invalid', () => setHasError(true));
+    inputElement.addEventListener('change', () => setHasError(false));
+  }, []);
+
+  return (
+    <div className='checkbox-input-group'>
+      <div className='checkbox-input-group__main'>
+        <input
+          name={name}
+          value={value}
+          onChange={onChange}
+          required={required}
+          className='checkbox-input-group__input'
+          type='checkbox'
+          ref={inputRef}
+        />
+        <label className={'checkbox-input-group__label' + (required ? ' checkbox-input-group__label--required' : '')}>
+          {label}
+        </label>
+      </div>
+      {hasError && <p className='input-group__error-message'>{errorMessage}</p>}
+    </div>
+  );
+}
+
 function InputGroup(props) {
   const {
     label,
@@ -36,6 +79,7 @@ function InputGroup(props) {
             className={'input-group__input' + (hasError ? ' input-group__input--error' : '')}
             name={name}
             value={value}
+            required={required}
             onChange={onChange}
             ref={inputRef}
           />)
@@ -91,14 +135,14 @@ function App() {
             <InputGroup
               label="First Name"
               name="firstName"
-              required={true}
+              required
               value={formData.firstName}
               onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
             />
             <InputGroup
               label="Last Name"
               name="lastName"
-              required={true}
+              required
               value={formData.lastName}
               onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
             />
@@ -107,7 +151,7 @@ function App() {
             label="Email Address"
             name="email"
             type="email"
-            required={true}
+            required
             value={formData.email}
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
           />
@@ -132,16 +176,19 @@ function App() {
             label="Message"
             name="message"
             type="textarea"
-            required={true}
+            required
             value={formData.message}
             onChange={(e) => setFormData({ ...formData, message: e.target.value })}
           />
-          <label className='input-group'>
-            <input className='input-group__input' type='checkbox' />
-            <span className='input-group__label'>
-              I consent to being contacted by the team
-            </span>
-          </label>
+          <CheckboxInputGroup
+            label="I consent to being contacted by the team"
+            errorMessage="To submit this form, please consent to being contacted"
+            required
+            name="canBeContacted"
+            value={formData.canBeContacted}
+            onChange={({ target: { value } }) => setFormData({ ...formData, canBeContacted: value })}
+            hasError
+          />
         </div>
         <footer className='contact-form__footer'>
           <button className='button' type='submit' onClick={handleSendForm}>Submit</button>
