@@ -22,6 +22,7 @@ function InputGroup(props) {
     }
     const inputElement = inputRef.current;
     inputElement.addEventListener('invalid', () => setHasError(true));
+    inputElement.addEventListener('change', () => setHasError(false));
   }, []);
 
   return (
@@ -72,8 +73,11 @@ function App() {
   const [isFormSent, setIsFormSent] = useState(false);
 
   function handleSendForm(e) {
-    // e.preventDefault();
-    setIsFormSent(true);
+    const { form: formElement } = e.target;
+    e.preventDefault();
+    if (formElement.reportValidity()) {
+      setIsFormSent(true);
+    }
   }
 
   return (
@@ -143,9 +147,6 @@ function App() {
           <button className='button' type='submit' onClick={handleSendForm}>Submit</button>
         </footer>
       </form>
-      <output style={{ background: 'white', padding: '1rem', margin: '2rem', display: 'block' }}>
-        {JSON.stringify(formData)}
-      </output>
       {isFormSent && <Toast />}
     </div>
   );
