@@ -53,7 +53,7 @@ function InputGroup(props) {
     required = false,
     value,
     onChange,
-    hasError: initialHasError,
+    hasError: initialHasError = false,
   } = props;
   const errorMessage = 'This field is required';
   const [hasError, setHasError] = useState(initialHasError);
@@ -65,7 +65,7 @@ function InputGroup(props) {
     }
     const inputElement = inputRef.current;
     inputElement.addEventListener('invalid', () => setHasError(true));
-    inputElement.addEventListener('change', () => setHasError(false));
+    inputElement.addEventListener('change', () => { setHasError(false) });
   }, []);
 
   return (
@@ -98,6 +98,41 @@ function InputGroup(props) {
   );
 }
 
+function RadioInputGroup(props) {
+  const {
+    label,
+    value,
+    name,
+    required,
+    radioItems,
+    onChange,
+  } = props;
+
+  return (
+    <fieldset className='radio-input-group'>
+      <legend className={'radio-input-group__group-label' + (required ? ' radio-input-group__group-label--required' : '')}>
+        {label}
+      </legend>
+      <ul className='radio-input-list'>
+        {radioItems.map(({ label: radioLabel, value: radioValue }) => (
+          <li className='radio-input-list__item'>
+            <input
+              className='radio-input-group__input'
+              type='radio'
+              name={name}
+              value={radioValue}
+              onChange={onChange}
+              checked={value === radioValue}
+            />
+            <label className='radio-input-group__label' htmlFor={name}>
+              {radioLabel}
+            </label>
+          </li>
+        ))}
+      </ul>
+    </fieldset>
+  );
+}
 function Toast() {
   return (
     <div className='toast'>
@@ -155,23 +190,16 @@ function App() {
             value={formData.email}
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
           />
-          <fieldset className='radio-input-group'>
-            <legend className='radio-input-group__groupl-label'>Query Type</legend>
-            <ul className='radio-input-list'>
-              <li className='radio-input-list__item'>
-                <input className='radio-input-group__input' type='radio' />
-                <label className='radio-input-group__label'>
-                  General Inquiry
-                </label>
-              </li>
-              <li className='radio-input-list__item'>
-                <input className='radio-input-group__input' type='radio' />
-                <label className='radio-input-group__label'>
-                  Support Request
-                </label>
-              </li>
-            </ul>
-          </fieldset>
+          <RadioInputGroup
+            label="Query Type"
+            required
+            radioItems={[
+              { label: 'General Inquiry', value: 'general_inquiry' },
+              { label: 'Support Request', value: 'support_request' },
+            ]}
+            onChange={({ target: { value } }) => setFormData({ ...formData, queryType: value })}
+            value={formData.queryType}
+          />
           <InputGroup
             label="Message"
             name="message"
@@ -190,6 +218,9 @@ function App() {
             hasError
           />
         </div>
+        <output>
+          {JSON.stringify(formData)}
+        </output>
         <footer className='contact-form__footer'>
           <button className='button' type='submit' onClick={handleSendForm}>Submit</button>
         </footer>

@@ -142,11 +142,11 @@ h6 {
   border: 0;
 }
 
-.radio-input-group__groupl-label {
+.radio-input-group__group-label {
   margin-bottom: 8px;
 }
 
-.radio-input-group__groupl-label--required::after {
+.radio-input-group__group-label--required::after {
   content: ' *';
   color: var(--green-600);
 }
@@ -189,9 +189,7 @@ h6 {
 }
 
 .input-group__input.input-group__input--error,
-.input-group__input:invalid,
-.input-group__textarea.input-group__input--error,
-.input-group__textarea:invalid {
+.input-group__textarea.input-group__input--error {
   border-color: var(--red);
 }
 
