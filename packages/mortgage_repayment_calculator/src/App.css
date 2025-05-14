@@ -1,5 +1,27 @@
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  src: url('https: //fonts.google.com/specimen/Plus+Jakarta+Sans');
+}
+
 * {
   box-sizing: border-box;
+}
+
+:root {
+  /* Colors - Primary*/
+  --lime: hsl(61, 70%, 52%);
+  --red: hsl(4, 69%, 50%);
+  /* Colors - Neutral */
+  --white: hsl(0, 0%, 100%);
+  --slate-100: hsl(202, 86%, 94%);
+  --slate-300: hsl(203, 41%, 72%);
+  --slate-500: hsl(200, 26%, 54%);
+  --slate-700: hsl(200, 24%, 40%);
+  --slate-900: hsl(202, 55%, 16%);
+  /* Typography */
+  --text-size-body: 16px;
+  --text-weight-regular: 500;
+  --text-weight-bold: 700;
 }
 
 html,
@@ -8,4 +30,6 @@ body {
   width: 100%;
   margin: 0;
   padding: 0;
+  font-family: 'Plus Jakarta Sans';
+  font-size: var(--text-size-body);
 }
