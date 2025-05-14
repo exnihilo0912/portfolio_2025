@@ -259,3 +259,22 @@ h6 {
 }
 
 .toast__content {}
+
+@media screen and (min-width: 1440px) {
+  .contact-form {
+    width: 50%;
+  }
+
+  .input-block .input-group,
+  .radio-input-list__item {
+    width: calc(50% - 16px);
+  }
+
+  .radio-input-list {
+    gap: 16px;
+  }
+
+  .input-group__textarea {
+    height: 6rem;
+  }
+}
