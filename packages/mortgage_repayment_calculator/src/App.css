@@ -33,3 +33,27 @@ body {
   font-family: 'Plus Jakarta Sans';
   font-size: var(--text-size-body);
 }
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+li {
+  margin: 0;
+  padding: 0;
+}
+
+ul,
+li,
+ol,
+dl {
+  list-style: none;
+}
+
+input {
+  outline: none;
+}
