@@ -171,7 +171,7 @@ h6 {
 }
 
 .radio-input-list__item:hover,
-.radio-input-list__item:active {
+.radio-input-list__item--active {
   background-color: var(--green-200);
   border-color: var(--green-600);
 }

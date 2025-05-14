@@ -106,7 +106,20 @@ function RadioInputGroup(props) {
     required,
     radioItems,
     onChange,
+    hasError: initialHasError = false,
   } = props;
+  const errorMessage = 'This field is required';
+  const [hasError, setHasError] = useState(initialHasError);
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (!inputRef.current) {
+      return;
+    }
+    const inputElement = inputRef.current;
+    inputElement.addEventListener('invalid', () => setHasError(true));
+    inputElement.addEventListener('change', () => { setHasError(false) });
+  }, []);
 
   return (
     <fieldset className='radio-input-group'>
@@ -115,21 +128,25 @@ function RadioInputGroup(props) {
       </legend>
       <ul className='radio-input-list'>
         {radioItems.map(({ label: radioLabel, value: radioValue }) => (
-          <li className='radio-input-list__item'>
+          <li className={'radio-input-list__item' + (value === radioValue ? ' radio-input-list__item--active' : '')}>
             <input
               className='radio-input-group__input'
               type='radio'
+              id={radioLabel}
               name={name}
               value={radioValue}
               onChange={onChange}
               checked={value === radioValue}
+              required={required}
+              ref={inputRef}
             />
-            <label className='radio-input-group__label' htmlFor={name}>
+            <label className='radio-input-group__label' htmlFor={radioLabel}>
               {radioLabel}
             </label>
           </li>
         ))}
       </ul>
+      {hasError && <p>{errorMessage}</p>}
     </fieldset>
   );
 }
@@ -215,7 +232,6 @@ function App() {
             name="canBeContacted"
             value={formData.canBeContacted}
             onChange={({ target: { value } }) => setFormData({ ...formData, canBeContacted: value })}
-            hasError
           />
         </div>
         <output>
