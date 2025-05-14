@@ -28,15 +28,16 @@ function CheckboxInputGroup(props) {
     <div className='checkbox-input-group'>
       <div className='checkbox-input-group__main'>
         <input
+          id={name}
           name={name}
-          value={value}
+          checked={value}
           onChange={onChange}
           required={required}
           className='checkbox-input-group__input'
           type='checkbox'
           ref={inputRef}
         />
-        <label className={'checkbox-input-group__label' + (required ? ' checkbox-input-group__label--required' : '')}>
+        <label htmlFor={name} className={'checkbox-input-group__label' + (required ? ' checkbox-input-group__label--required' : '')}>
           {label}
         </label>
       </div>
@@ -76,6 +77,7 @@ function InputGroup(props) {
       {
         type === 'textarea'
           ? (<textarea
+            id={name}
             className={'input-group__textarea' + (hasError ? ' input-group__input--error' : '')}
             name={name}
             value={value}
@@ -84,6 +86,7 @@ function InputGroup(props) {
             ref={inputRef}
           />)
           : (<input
+            id={name}
             className={'input-group__input' + (hasError ? ' input-group__input--error' : '')}
             type={type}
             name={name}
@@ -231,7 +234,7 @@ function App() {
             required
             name="canBeContacted"
             value={formData.canBeContacted}
-            onChange={({ target: { value } }) => setFormData({ ...formData, canBeContacted: value })}
+            onChange={({ target: { checked } }) => setFormData({ ...formData, canBeContacted: checked })}
           />
         </div>
         <output>
