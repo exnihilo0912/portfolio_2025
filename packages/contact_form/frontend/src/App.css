@@ -263,11 +263,12 @@ h6 {
 @media screen and (min-width: 1440px) {
   .contact-form {
     width: 50%;
+    max-width: 600px;
   }
 
   .input-block .input-group,
   .radio-input-list__item {
-    width: calc(50% - 16px);
+    width: calc(50% - 8px);
   }
 
   .radio-input-list {
