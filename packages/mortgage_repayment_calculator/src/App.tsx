@@ -1,16 +1,59 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 
+interface InputProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
+  value: string;
+  onChange: (event: any) => void;
+  label: string;
+}
+function InputGroup(props: InputProps) {
+  const {
+    type,
+    value,
+    onChange,
+    name,
+    label,
+  } = props;
+
+  return (
+    <div className='input-group'>
+      <label className='input-group__label' htmlFor={name}>{label}</label>
+      <input
+        className='input-group__input'
+        id={name}
+        name={name}
+        type={type}
+        value={value}
+        onChange={onChange}
+      />
+    </div>
+  );
+}
+
+interface FormData {
+  amount: string,
+}
+const initialFormData: FormData = {
+  amount: '',
+};
+
 function App() {
+  const [formData, setFormData] = useState(initialFormData);
+
   return (
     <div className="page">
       <form className='form'>
         <section className='input-block'>
-          <header>
-            <h1>Mortgage Calculator</h1>
+          <header className='input-block__header'>
+            <h1 className='heading'>Mortgage Calculator</h1>
             <button>Clear All</button>
           </header>
-          <div>
+          <div className='input-block__body'>
+            <InputGroup
+              label="Mortgage Amount"
+              value={formData.amount}
+              onChange={({ target: { value } }) => setFormData({ ...formData, amount: value })}
+            />
             <div>
               <label>Mortgage Amount</label>
               <input />
@@ -35,7 +78,7 @@ function App() {
               </div>
             </fieldset>
           </div>
-          <footer>
+          <footer className='input-block__footer'>
             <button>Calculate Repayments</button>
           </footer>
         </section>

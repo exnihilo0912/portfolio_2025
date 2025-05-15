@@ -64,9 +64,32 @@ input {
   outline: none;
 }
 
+.output-block {
+  padding: 1rem;
+}
+
 .input-block {
   background-color: var(--white);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 1rem;
 }
+
+.input-block__header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.heading {
+  font-size: 24px;
+  width: 100%;
+}
+
+.input-block__body {}
+
+.input-block__footer {}
 
 .output-block {
   background-color: var(--slate-900);
