@@ -37,6 +37,7 @@ body {
   padding: 0;
   font-family: 'Plus Jakarta Sans';
   font-size: var(--text-size-body);
+  background: var(--slate-100);
 }
 
 h1,
@@ -61,4 +62,13 @@ dl {
 
 input {
   outline: none;
+}
+
+.input-block {
+  background-color: var(--white);
+}
+
+.output-block {
+  background-color: var(--slate-900);
+  color: var(--slate-100)
 }
