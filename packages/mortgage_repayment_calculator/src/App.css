@@ -33,8 +33,11 @@
   --slate-500: hsl(200, 26%, 54%);
   --slate-700: hsl(200, 24%, 40%);
   --slate-900: hsl(202, 55%, 16%);
+  --slate-1000: hsl(202, 55%, 14%);
   /* Typography */
   --text-size-body: 16px;
+  --text-size-big: 24px;
+  --text-size-black: 48px;
   --text-weight-regular: 500;
   --text-weight-bold: 700;
 }
@@ -255,6 +258,7 @@ input {
   height: 100%;
 }
 
+
 .empty-output {
   display: flex;
   flex-direction: column;
@@ -263,7 +267,52 @@ input {
   padding: 1rem;
 }
 
-.empty-output__text {
+.empty-output .output-text {
   text-align: center;
+}
+
+.output-text {
   color: var(--slate-300);
+}
+
+.output-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.output-card {
+  background-color: var(--slate-1000);
+  border-radius: 5px;
+  padding: 24px 16px;
+  border-top: 3px solid var(--lime);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.output-card__title {
+  color: var(--slate-300);
+  font-weight: var(--text-weight-regular);
+  font-size: var(--text-size-body);
+}
+
+.output {
+  font-weight: var(--text-weight-bold);
+  font-size: var(--text-size-big);
+}
+
+.output--accent {
+  color: var(--lime);
+}
+
+.output--big {
+  font-size: var(--text-size-black);
+}
+
+
+.separator {
+  background-color: var(--slate-500);
+  height: 1px;
+  margin: 16px 0;
 }

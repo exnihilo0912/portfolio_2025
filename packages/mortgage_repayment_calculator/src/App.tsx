@@ -134,19 +134,19 @@ function OuutputBlock({ formData }: OutputBlockProps) {
             <div className='empty-output'>
               <img src='./assets/images/illustration-empty.svg' />
               <h2>Results shown here</h2>
-              <p className='empty-output__text'>Complete the form and click "calculate repayments" to see what your monthly repayments would be.</p>
+              <p className='output-text'>Complete the form and click "calculate repayments" to see what your monthly repayments would be.</p>
             </div>
           )
           : (
-            <div className=''>
+            <div className='output-section'>
               <h2>Your results</h2>
-              <p>Your results are shown below based on the information you provided. To adjust the results, edit the form and click "calculate repayments" again.</p>
+              <p className='output-text'>Your results are shown below based on the information you provided. To adjust the results, edit the form and click "calculate repayments" again.</p>
               <div className='output-card'>
-                <h3>Your mounthly repayments</h3>
-                <output className='output'></output>
+                <h3 className='output-card__title'>Your mounthly repayments</h3>
+                <output className='output output--big output--accent'>$1,797.74</output>
                 <div className='separator'></div>
-                <h3>Total you'll repay over the term</h3>
-                <output className='output'></output>
+                <h3 className='output-card__title'>Total you'll repay over the term</h3>
+                <output className='output'>$539,322.94</output>
               </div>
             </div>
           )
