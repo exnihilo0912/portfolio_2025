@@ -22,6 +22,8 @@
 :root {
   /* Colors - Primary*/
   --lime: hsl(61, 70%, 52%);
+  --lime-light: hsla(61, 70%, 52%, 80%);
+  --lime-lighter: hsla(61, 70%, 52%, 20%);
   /* Colors - Accent */
   --red: hsl(4, 69%, 50%);
   /* Colors - Neutral */
@@ -201,8 +203,8 @@ input {
   border-radius: 5px;
   border: 1px solid var(--slate-500);
   outline: none;
-  padding-left: 24px;
-  padding-right: 24px;
+  padding-left: 16px;
+  padding-right: 16px;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -214,7 +216,7 @@ input {
 }
 
 .radio-input-list__item--active {
-  background-color: var(--lime);
+  background-color: var(--lime-lighter);
 }
 
 .button {
@@ -231,7 +233,7 @@ input {
 }
 
 .button--primary:hover {
-  filter: opacity(0.8);
+  background-color: var(--lime-light);
 }
 
 .button--ghost {
@@ -240,4 +242,11 @@ input {
   font-weight: var(--text-size-body);
   text-decoration: underline;
   padding: 16px 0;
+}
+
+.button-text-icon {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  height: 100%;
 }

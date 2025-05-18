@@ -100,7 +100,7 @@ function InputGroup(props: InputProps) {
   } = props;
 
 
-  
+
   return (
     <div className='input-group'>
       <label className='input-group__label' htmlFor={name}>{label}</label>
@@ -135,11 +135,13 @@ interface FormData {
   amount: string;
   durationInYears: string;
   interestRate: string;
+  mortgageType: string;
 }
 const initialFormData: FormData = {
   amount: '',
   durationInYears: '',
   interestRate: '',
+  mortgageType: '',
 };
 
 function App() {
@@ -175,10 +177,20 @@ function App() {
               onChange={({ target: { value } }) => setFormData({ ...formData, interestRate: value })}
               suffixSlot={<p>%</p>}
             />
-            <RadioInputGroup label='Mortgage Type' radioItems={radioItems} />
+            <RadioInputGroup
+              label='Mortgage Type'
+              radioItems={radioItems}
+              value={formData.mortgageType.toString()}
+              onChange={({ target: { value } }) => setFormData({ ...formData, mortgageType: value })}
+            />
           </div>
           <footer className='input-block__footer'>
-            <Button type='submit' buttonType='primary'>Calculate Repayments</Button>
+            <Button type='submit' buttonType='primary'>
+              <div className='button-text-icon'>
+                <img src='./assets/images/icon-calculator.svg' alt='calculator icon' />
+                <span>Calculate Repayments</span>
+              </div>
+            </Button>
           </footer>
         </section>
         <section className='output-block'>
