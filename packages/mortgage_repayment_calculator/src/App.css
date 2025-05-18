@@ -220,11 +220,14 @@ input {
 }
 
 .button {
+  width: 100%;
   height: 48px;
   padding: 16px 48px;
   border-radius: 90px;
   font-weight: var(--text-weight-bold);
   cursor: pointer;
+  display: flex;
+  justify-content: center;
 }
 
 .button--primary {
@@ -237,6 +240,7 @@ input {
 }
 
 .button--ghost {
+  width: fit-content;
   background-color: transparent;
   border: 1px solid transparent;
   font-weight: var(--text-size-body);
@@ -249,4 +253,17 @@ input {
   gap: 8px;
   align-items: center;
   height: 100%;
+}
+
+.empty-output {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 1rem;
+}
+
+.empty-output__text {
+  text-align: center;
+  color: var(--slate-300);
 }

@@ -120,6 +120,41 @@ function InputGroup(props: InputProps) {
   );
 }
 
+interface OutputBlockProps {
+  formData: FormData;
+}
+function OuutputBlock({ formData }: OutputBlockProps) {
+  const { isFormSent } = formData;
+
+  return (
+    <section className='output-block'>
+      {
+        !isFormSent
+          ? (
+            <div className='empty-output'>
+              <img src='./assets/images/illustration-empty.svg' />
+              <h2>Results shown here</h2>
+              <p className='empty-output__text'>Complete the form and click "calculate repayments" to see what your monthly repayments would be.</p>
+            </div>
+          )
+          : (
+            <div className=''>
+              <h2>Your results</h2>
+              <p>Your results are shown below based on the information you provided. To adjust the results, edit the form and click "calculate repayments" again.</p>
+              <div className='output-card'>
+                <h3>Your mounthly repayments</h3>
+                <output className='output'></output>
+                <div className='separator'></div>
+                <h3>Total you'll repay over the term</h3>
+                <output className='output'></output>
+              </div>
+            </div>
+          )
+      }
+    </section>
+  );
+}
+
 const radioItems: RadioItem[] = [
   {
     label: 'Repayment',
@@ -136,16 +171,21 @@ interface FormData {
   durationInYears: string;
   interestRate: string;
   mortgageType: string;
+  isFormSent: boolean;
 }
 const initialFormData: FormData = {
   amount: '',
   durationInYears: '',
   interestRate: '',
   mortgageType: '',
+  isFormSent: true,
 };
 
 function App() {
   const [formData, setFormData] = useState(initialFormData);
+  function handleResetForm() {
+    setFormData(initialFormData);
+  }
 
   return (
     <div className="page">
@@ -153,7 +193,7 @@ function App() {
         <section className='input-block'>
           <header className='input-block__header'>
             <h1 className='heading'>Mortgage Calculator</h1>
-            <Button buttonType='ghost'>Clear All</Button>
+            <Button buttonType='ghost' onClick={handleResetForm}>Clear All</Button>
           </header>
           <div className='input-block__body'>
             <InputGroup
@@ -193,25 +233,7 @@ function App() {
             </Button>
           </footer>
         </section>
-        <section className='output-block'>
-          <div className='empty-output'>
-            <img src='./assets/images/illustration-empty.svg' />
-            <h2>Results shown here</h2>
-            <p>Complete the form and click "calculate repayments: to see what your monthly repayments would be.</p>
-          </div>
-          <div className=''>
-            <h2>Your results</h2>
-            <p>Your results are shown below based on the information you provided. To adjust the results, edit the form and click "calculate repayments" again.</p>
-            <div className='output-card'>
-              <h3>Your mounthly repayments</h3>
-              <output className='output'></output>
-              <div className='separator'></div>
-              <h3>Total you'll repay over the term</h3>
-              <output className='output'></output>
-            </div>
-          </div>
-          <p>output</p>
-        </section>
+        <OuutputBlock formData={formData} />
       </form>
     </div>
   );
