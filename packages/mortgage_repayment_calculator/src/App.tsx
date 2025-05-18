@@ -1,6 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './App.css';
 
+
+// UTILS
+function getCurrencyFormattedNumber(number: number): string {
+  return new Intl.NumberFormat(
+    "en-US",
+    {
+      style: "currency",
+      currency: "USD",
+    }).format(number);
+}
+
+// Components
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   buttonType?: 'default' | 'primary' | 'ghost';
 }
@@ -123,7 +135,7 @@ function InputGroup(props: InputProps) {
 interface OutputBlockProps {
   formData: FormData;
 }
-function OuutputBlock({ formData }: OutputBlockProps) {
+function OutputBlock({ formData }: OutputBlockProps) {
   const {
     amount,
     durationInYears,
@@ -131,20 +143,33 @@ function OuutputBlock({ formData }: OutputBlockProps) {
     mortgageType,
     isFormSent,
   } = formData;
-  const totalRepayment = (Number(amount) * (1 + (Number(interestRate) / 100)));
-  const monthlyRepayment = totalRepayment / (Number(durationInYears) * 12);
-  const formatedMonthlyRepayment = new Intl.NumberFormat(
-    "en-US",
-    {
-      style: "currency",
-      currency: "USD",
-    }).format(monthlyRepayment);
-  const formatedTotalRepayment = new Intl.NumberFormat(
-    "en-US",
-    {
-      style: "currency",
-      currency: "USD",
-    }).format(totalRepayment);
+  // principal -- borrowed amount
+  // anual interest -- percentage of principal
+  // total -- principal + interest
+
+  // Interest Amount
+  const principal = Number.parseFloat(amount);
+  const anualInterestRateInPercent = Number.parseInt(interestRate, 10) / 100;
+  const anualInterestAmount = principal * anualInterestRateInPercent;
+
+  // Total Payment
+  const loanTermInYears = Number.parseInt(durationInYears, 10);
+  const totalInterestAmount = anualInterestAmount * loanTermInYears;
+  const totalRepayment = totalInterestAmount + principal;
+
+  // Monthly payments
+  const loanTermInMonths = loanTermInYears * 12;
+
+  const monthlyAmount = mortgageType === 'repayment'
+    ? totalRepayment / loanTermInMonths
+    : totalInterestAmount / loanTermInMonths;
+
+  const totalAmount = mortgageType === 'repayment'
+    ? totalRepayment
+    : totalInterestAmount;
+
+  const formatedMonthlyRepayment = getCurrencyFormattedNumber(monthlyAmount);
+  const formatedTotalRepayment = getCurrencyFormattedNumber(totalAmount);
 
   return (
     <section className='output-block'>
@@ -253,7 +278,7 @@ function App() {
             </Button>
           </footer>
         </section>
-        <OuutputBlock formData={formData} />
+        <OutputBlock formData={formData} />
       </form>
     </div>
   );
