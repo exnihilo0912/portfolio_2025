@@ -124,7 +124,27 @@ interface OutputBlockProps {
   formData: FormData;
 }
 function OuutputBlock({ formData }: OutputBlockProps) {
-  const { isFormSent } = formData;
+  const {
+    amount,
+    durationInYears,
+    interestRate,
+    mortgageType,
+    isFormSent,
+  } = formData;
+  const totalRepayment = (Number(amount) * (1 + (Number(interestRate) / 100)));
+  const monthlyRepayment = totalRepayment / (Number(durationInYears) * 12);
+  const formatedMonthlyRepayment = new Intl.NumberFormat(
+    "en-US",
+    {
+      style: "currency",
+      currency: "USD",
+    }).format(monthlyRepayment);
+  const formatedTotalRepayment = new Intl.NumberFormat(
+    "en-US",
+    {
+      style: "currency",
+      currency: "USD",
+    }).format(totalRepayment);
 
   return (
     <section className='output-block'>
@@ -143,10 +163,10 @@ function OuutputBlock({ formData }: OutputBlockProps) {
               <p className='output-text'>Your results are shown below based on the information you provided. To adjust the results, edit the form and click "calculate repayments" again.</p>
               <div className='output-card'>
                 <h3 className='output-card__title'>Your mounthly repayments</h3>
-                <output className='output output--big output--accent'>$1,797.74</output>
+                <output className='output output--big output--accent'>{formatedMonthlyRepayment}</output>
                 <div className='separator'></div>
                 <h3 className='output-card__title'>Total you'll repay over the term</h3>
-                <output className='output'>$539,322.94</output>
+                <output className='output'>{formatedTotalRepayment}</output>
               </div>
             </div>
           )
@@ -174,10 +194,10 @@ interface FormData {
   isFormSent: boolean;
 }
 const initialFormData: FormData = {
-  amount: '',
-  durationInYears: '',
-  interestRate: '',
-  mortgageType: '',
+  amount: '100000',
+  durationInYears: '25',
+  interestRate: '2',
+  mortgageType: 'repayment',
   isFormSent: true,
 };
 
