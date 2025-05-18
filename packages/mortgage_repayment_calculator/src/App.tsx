@@ -248,20 +248,22 @@ function App() {
               onChange={({ target: { value } }) => setFormData({ ...formData, amount: value })}
               prefixSlot={<p>$</p>}
             />
-            <InputGroup
-              label="Mortgage Term"
-              value={formData.durationInYears}
-              type='number'
-              onChange={({ target: { value } }) => setFormData({ ...formData, durationInYears: value })}
-              suffixSlot={<p>years</p>}
-            />
-            <InputGroup
-              label="Interest Rate"
-              value={formData.interestRate}
-              type='number'
-              onChange={({ target: { value } }) => setFormData({ ...formData, interestRate: value })}
-              suffixSlot={<p>%</p>}
-            />
+            <div className='input-pair'>
+              <InputGroup
+                label="Mortgage Term"
+                value={formData.durationInYears}
+                type='number'
+                onChange={({ target: { value } }) => setFormData({ ...formData, durationInYears: value })}
+                suffixSlot={<p>years</p>}
+              />
+              <InputGroup
+                label="Interest Rate"
+                value={formData.interestRate}
+                type='number'
+                onChange={({ target: { value } }) => setFormData({ ...formData, interestRate: value })}
+                suffixSlot={<p>%</p>}
+              />
+            </div>
             <RadioInputGroup
               label='Mortgage Type'
               radioItems={radioItems}
