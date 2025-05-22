@@ -31,6 +31,7 @@ function Button(props: ButtonProps) {
     <button className={classesAsText} type={type} {...partialProps}>{children}</button>
   );
 }
+
 interface RadioItem {
   label: string;
   value: any;
@@ -99,6 +100,7 @@ interface InputProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<H
   label: string;
   prefixSlot?: React.ReactNode;
   suffixSlot?: React.ReactNode;
+  hasError?: boolean,
 }
 function InputGroup(props: InputProps) {
   const {
@@ -109,15 +111,27 @@ function InputGroup(props: InputProps) {
     label,
     prefixSlot,
     suffixSlot,
+    hasError: initialHasError,
+    ...partialProps
   } = props;
 
+  const [hasError, setHasError] = useState(initialHasError);
+  const inputRef = useRef(null);
 
+  useEffect(() => {
+    if (!inputRef.current) {
+      return;
+    }
+    const inputElement = inputRef.current as HTMLInputElement;
+    inputElement.addEventListener('invalid', () => setHasError(true));
+    inputElement.addEventListener('change', () => { setHasError(false) });
+  }, []);
 
   return (
     <div className='input-group'>
       <label className='input-group__label' htmlFor={name}>{label}</label>
-      <div className='input-group__input-container'>
-        {prefixSlot && <div className='input-group__input-slot'>{prefixSlot}</div>}
+      <div className={['input-group__input-container', hasError ? 'input-group__input-container--error' : ''].filter(v => v).join(' ')}>
+        {prefixSlot && <div className={['input-group__input-slot', hasError ? 'input-group__input-slot--error' : ''].filter(v => v).join(' ')}>{prefixSlot}</div>}
         <input
           className='input-group__input'
           id={name}
@@ -125,9 +139,12 @@ function InputGroup(props: InputProps) {
           type={type}
           value={value}
           onChange={onChange}
+          {...partialProps}
+          ref={inputRef}
         />
-        {suffixSlot && <div className='input-group__input-slot'>{suffixSlot}</div>}
+        {suffixSlot && <div className={['input-group__input-slot', hasError ? 'input-group__input-slot--error' : ''].filter(v => v).join(' ')}>{suffixSlot}</div>}
       </div>
+      {hasError && <p className='input-group__error'>This field is required</p>}
     </div>
   );
 }
@@ -219,17 +236,24 @@ interface FormData {
   isFormSent: boolean;
 }
 const initialFormData: FormData = {
-  amount: '100000',
-  durationInYears: '25',
-  interestRate: '2',
-  mortgageType: 'repayment',
-  isFormSent: true,
+  amount: '',
+  durationInYears: '',
+  interestRate: '',
+  mortgageType: '',
+  isFormSent: false,
 };
 
 function App() {
   const [formData, setFormData] = useState(initialFormData);
   function handleResetForm() {
     setFormData(initialFormData);
+  }
+  function handleSubmitForm(e: React.FormEvent<HTMLButtonElement>) {
+    e.preventDefault();
+    const button = e.target as HTMLButtonElement;
+    if (button.form?.checkValidity()) {
+      setFormData({ ...formData, isFormSent: true });
+    }
   }
 
   return (
@@ -247,6 +271,7 @@ function App() {
               type='number'
               onChange={({ target: { value } }) => setFormData({ ...formData, amount: value })}
               prefixSlot={<p>$</p>}
+              required
             />
             <div className='input-pair'>
               <InputGroup
@@ -255,6 +280,7 @@ function App() {
                 type='number'
                 onChange={({ target: { value } }) => setFormData({ ...formData, durationInYears: value })}
                 suffixSlot={<p>years</p>}
+                required
               />
               <InputGroup
                 label="Interest Rate"
@@ -262,6 +288,7 @@ function App() {
                 type='number'
                 onChange={({ target: { value } }) => setFormData({ ...formData, interestRate: value })}
                 suffixSlot={<p>%</p>}
+                required
               />
             </div>
             <RadioInputGroup
@@ -269,10 +296,11 @@ function App() {
               radioItems={radioItems}
               value={formData.mortgageType.toString()}
               onChange={({ target: { value } }) => setFormData({ ...formData, mortgageType: value })}
+              required
             />
           </div>
           <footer className='input-block__footer'>
-            <Button type='submit' buttonType='primary'>
+            <Button type='submit' buttonType='primary' onClick={handleSubmitForm}>
               <div className='button-text-icon'>
                 <img src='./assets/images/icon-calculator.svg' alt='calculator icon' />
                 <span>Calculate Repayments</span>

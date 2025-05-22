@@ -148,6 +148,10 @@ input {
   cursor: pointer;
 }
 
+.input-group__error {
+  color: var(--red);
+}
+
 .input-group__input-container:hover {
   border-color: var(--slate-900);
   cursor: pointer;
@@ -157,6 +161,10 @@ input {
 .input-group__input-container:focus,
 .input-group__input-container:focus-within {
   border-color: var(--lime);
+}
+
+.input-group__input-container--error {
+  border-color: var(--red);
 }
 
 .input-group__input-slot {
@@ -176,6 +184,12 @@ input {
 .input-group__input-container:focus .input-group__input-slot,
 .input-group__input-container:focus-within .input-group__input-slot {
   background-color: var(--lime);
+}
+
+
+.input-group__input-slot--error {
+  background-color: var(--red);
+  color: var(--white);
 }
 
 .input-group__input {
