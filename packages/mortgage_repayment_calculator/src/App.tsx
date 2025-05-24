@@ -150,48 +150,18 @@ function InputGroup(props: InputProps) {
 }
 
 interface OutputBlockProps {
-  formData: FormData;
+  outputData: OutputData;
 }
-function OutputBlock({ formData }: OutputBlockProps) {
+function OutputBlock({ outputData }: OutputBlockProps) {
   const {
-    amount,
-    durationInYears,
-    interestRate,
-    mortgageType,
-    isFormSent,
-  } = formData;
-  // principal -- borrowed amount
-  // anual interest -- percentage of principal
-  // total -- principal + interest
-
-  // Interest Amount
-  const principal = Number.parseFloat(amount);
-  const anualInterestRateInPercent = Number.parseInt(interestRate, 10) / 100;
-  const anualInterestAmount = principal * anualInterestRateInPercent;
-
-  // Total Payment
-  const loanTermInYears = Number.parseInt(durationInYears, 10);
-  const totalInterestAmount = anualInterestAmount * loanTermInYears;
-  const totalRepayment = totalInterestAmount + principal;
-
-  // Monthly payments
-  const loanTermInMonths = loanTermInYears * 12;
-
-  const monthlyAmount = mortgageType === 'repayment'
-    ? totalRepayment / loanTermInMonths
-    : totalInterestAmount / loanTermInMonths;
-
-  const totalAmount = mortgageType === 'repayment'
-    ? totalRepayment
-    : totalInterestAmount;
-
-  const formatedMonthlyRepayment = getCurrencyFormattedNumber(monthlyAmount);
-  const formatedTotalRepayment = getCurrencyFormattedNumber(totalAmount);
+    formatedMonthlyRepayment,
+    formatedTotalRepayment
+  } = outputData;
 
   return (
     <section className='output-block'>
       {
-        !isFormSent
+        !(formatedMonthlyRepayment && formatedTotalRepayment)
           ? (
             <div className='empty-output'>
               <img src='./assets/images/illustration-empty.svg' />
@@ -243,16 +213,57 @@ const initialFormData: FormData = {
   isFormSent: false,
 };
 
+interface OutputData {
+  formatedMonthlyRepayment?: number,
+  formatedTotalRepayment?: number
+}
+
 function App() {
   const [formData, setFormData] = useState(initialFormData);
+  const [outputData, setOutputData] = useState({});
+
+
   function handleResetForm() {
     setFormData(initialFormData);
   }
   function handleSubmitForm(e: React.FormEvent<HTMLButtonElement>) {
     e.preventDefault();
     const button = e.target as HTMLButtonElement;
+
     if (button.form?.checkValidity()) {
-      setFormData({ ...formData, isFormSent: true });
+      const {
+        amount,
+        interestRate,
+        durationInYears,
+        mortgageType,
+      } = formData;
+
+      const principal = Number.parseFloat(amount);
+      const anualInterestRateInPercent = Number.parseInt(interestRate, 10) / 100;
+      const anualInterestAmount = principal * anualInterestRateInPercent;
+
+      // Total Payment
+      const loanTermInYears = Number.parseInt(durationInYears, 10);
+      const totalInterestAmount = anualInterestAmount * loanTermInYears;
+      const totalRepayment = totalInterestAmount + principal;
+
+      // Monthly payments
+      const loanTermInMonths = loanTermInYears * 12;
+
+      const monthlyAmount = mortgageType === 'repayment'
+        ? totalRepayment / loanTermInMonths
+        : totalInterestAmount / loanTermInMonths;
+
+      const totalAmount = mortgageType === 'repayment'
+        ? totalRepayment
+        : totalInterestAmount;
+
+      const formatedMonthlyRepayment = getCurrencyFormattedNumber(monthlyAmount);
+      const formatedTotalRepayment = getCurrencyFormattedNumber(totalAmount);
+      setOutputData({
+        formatedMonthlyRepayment,
+        formatedTotalRepayment,
+      })
     }
   }
 
@@ -308,7 +319,7 @@ function App() {
             </Button>
           </footer>
         </section>
-        <OutputBlock formData={formData} />
+        <OutputBlock outputData={outputData} />
       </form>
     </div>
   );
